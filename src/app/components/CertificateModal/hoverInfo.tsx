@@ -5,7 +5,11 @@ import {
 } from "@/components/ui/hover-card"
 import { IoMdInformationCircleOutline } from "react-icons/io"
 
-export function HoverInfo() {
+interface HoverInfo {
+  info?: string
+}
+
+export function HoverInfo({ info }: HoverInfo) {
   return (
     <HoverCard>
       <HoverCardTrigger asChild>
@@ -16,7 +20,7 @@ export function HoverInfo() {
       <HoverCardContent className="w-80">
         <div className="flex justify-between space-x-4">
           <p className="text-sm">
-            The React Framework – created and maintained by @vercel.
+            {info}
           </p>
         </div>
       </HoverCardContent>
