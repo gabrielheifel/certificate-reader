@@ -33,7 +33,11 @@ const formSchema = z.object({
 
 type FormSchema = z.infer<typeof formSchema>;
 
-export default function Modal() {
+interface Modal {
+  className?: string,
+}
+
+export default function Modal({ className }: Modal) {
 
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
@@ -48,7 +52,7 @@ export default function Modal() {
 
 
   return (
-    <main>
+    <main className={className}>
       <Dialog>
         <DialogTrigger asChild>
           <Button>
