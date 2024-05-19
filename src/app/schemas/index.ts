@@ -12,6 +12,25 @@ export const LoginSchema = z.object({
   }),
 })
 
+export const RegisterSchema = z.object({
+  email: z.string()
+    .email('Formato de email inválido')
+    .toLowerCase()
+    .refine(email => {
+      return (email.endsWith('@inf.ufpel.edu.br'))
+    }, 'Email precisa ser o inf.ufpel.edu.br'),
+  password: z.string().min(1, {
+    message: 'Senha precisa ser informada'
+  }),
+  name: z.string().min(1, {
+    message: 'Nome precisa ser informado'
+  }),
+  registration: z.string().min(1, {
+    message: 'Matrícula precisa ser informada'
+  }),
+  isAdmin: z.boolean()
+})
+
 export const FormSchema = z.object({
   name: z.string()
     .min(1, { message: "Name is required." })
@@ -27,5 +46,5 @@ export const FormSchema = z.object({
   days: z.string().min(1, { message: "Activity Name is required." }),
   date: z.string().min(1, { message: "Activity Name is required." }),
 
-  file: z.instanceof(FileList).transform(list => (list.item(0))),
+  // file: z.instanceof(FileList).transform(list => (list.item(0))),
 });
