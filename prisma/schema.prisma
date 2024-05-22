@@ -38,6 +38,11 @@ model Account {
   @@map("accounts")
 }
 
+enum UserRole {
+  ADMIN
+  USER
+}
+
 model User {
   id            String        @id @default(cuid())
   name          String?
@@ -45,8 +50,8 @@ model User {
   emailVerified DateTime?     @map("email_verified")
   registration  Int?
   image         String?
-  isAdmin       Boolean?
   password      String?
+  role          UserRole      @default(USER)
   accounts      Account[]
   certificates  Certificate[]
 
@@ -64,4 +69,6 @@ model Certificate {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   doneAt    DateTime?
+
+  @@map("certificates")
 }
