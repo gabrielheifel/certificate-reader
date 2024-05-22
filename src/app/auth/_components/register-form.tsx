@@ -11,12 +11,14 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { FormError } from "./form-error"
 import { register } from "@/actions/register"
 import { CardWrapper } from "./card-wrapper"
-import { UserService } from "@/services/database/UserService"
+import { useToast } from "@/components/ui/use-toast"
+// import { UserService } from "@/services/database/UserService"
 
 export function RegisterForm() {
 
   const [isPending, startTransiction] = useTransition()
   const [error, setError] = useState<string | undefined>("")
+  const { toast } = useToast()
 
   const form = useForm<z.infer<typeof RegisterSchema>>({
     resolver: zodResolver(RegisterSchema),
@@ -31,20 +33,29 @@ export function RegisterForm() {
 
   const { handleSubmit, formState: { errors } } = form
 
-  const handleSignIn = async (values: z.infer<typeof RegisterSchema>) => {
+  const handleCreate = async (values: z.infer<typeof RegisterSchema>) => {
     setError("")
+
+    toast({
+      title: "Registering...",
+    })
 
     startTransiction(() => {
       register(values)
         .then((data) => {
-          setError(data.error)
+          toast({
+            variant: data?.success ? "success" : "destructive",
+            title: data?.success ? data?.success : data?.error,
+
+          })
+          setError(data?.error)
         })
     })
-
-    // await signIn("google")
-    // await signIn("email", { email: values.email })
-
   }
+
+  // await signIn("google")
+  // await signIn("email", { email: values.email })
+
 
   return (
     <CardWrapper
@@ -55,7 +66,7 @@ export function RegisterForm() {
       showSocial
     >
       <Form {...form}>
-        <form className="space-y-4" onSubmit={handleSubmit(handleSignIn)}>
+        <form className="space-y-4" onSubmit={handleSubmit(handleCreate)}>
           <div className="space-y-2">
             <FormField
               control={form.control}
@@ -146,7 +157,7 @@ export function RegisterForm() {
           </div>
           <FormError message={error} />
           <Button className="w-full" type="submit" disabled={isPending}>
-            Create
+            {isPending ? 'Carregando...' : 'Cadastrar'}
           </Button>
         </form>
       </Form>

@@ -3,10 +3,10 @@ import * as z from "zod"
 export const LoginSchema = z.object({
   email: z.string()
     .email('Formato de email inválido')
-    .toLowerCase()
-    .refine(email => {
-      return (email.endsWith('@inf.ufpel.edu.br'))
-    }, 'Email precisa ser o inf.ufpel.edu.br'),
+    .toLowerCase(),
+  // .refine(email => {
+  //   return (email.endsWith('@inf.ufpel.edu.br'))
+  // }, 'Email precisa ser o inf.ufpel.edu.br'),
   password: z.string().min(1, {
     message: 'Senha precisa ser informada'
   }),
@@ -15,18 +15,18 @@ export const LoginSchema = z.object({
 export const RegisterSchema = z.object({
   email: z.string()
     .email('Formato de email inválido')
-    .toLowerCase()
-    .refine(email => {
-      return (email.endsWith('@inf.ufpel.edu.br'))
-    }, 'Email precisa ser o inf.ufpel.edu.br'),
+    .toLowerCase(),
+  // .refine(email => {
+  //   return (email.endsWith('@inf.ufpel.edu.br'))
+  // }, 'Email precisa ser o inf.ufpel.edu.br'),
   password: z.string().min(1, {
     message: 'Senha precisa ser informada'
   }),
   name: z.string().min(1, {
     message: 'Nome precisa ser informado'
   }),
-  registration: z.string().min(1, {
-    message: 'Matrícula precisa ser informada'
+  registration: z.string().min(8).max(8, {
+    message: 'Deve ter 8 caracteres'
   }),
   isAdmin: z.boolean()
 })

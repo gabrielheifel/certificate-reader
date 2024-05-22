@@ -11,11 +11,13 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { FormError } from "./form-error"
 import { login } from "@/actions/login"
 import { CardWrapper } from "./card-wrapper"
+import { useToast } from "@/components/ui/use-toast"
 
 export function LoginForm() {
 
   const [isPending, startTransiction] = useTransition()
   const [error, setError] = useState<string | undefined>("")
+  const { toast } = useToast()
 
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
@@ -30,10 +32,22 @@ export function LoginForm() {
   const handleSignIn = async (values: z.infer<typeof LoginSchema>) => {
     setError("")
 
-    startTransiction(() => {
-      login(values)
+    startTransiction(async () => {
+      await login(values)
         .then((data) => {
-          setError(data.error)
+          if (data?.message) {
+            toast({
+              variant: "success",
+              title: data?.message,
+            })
+          } else {
+            toast({
+              variant: "destructive",
+              title: "Login failed",
+              description: data?.error
+            })
+            setError(data?.error)
+          }
         })
     })
 
@@ -99,7 +113,7 @@ export function LoginForm() {
           </div>
           <FormError message={error} />
           <Button className="w-full" type="submit" disabled={isPending}>
-            Sign in
+            {isPending ? 'Carregando...' : 'Sign'}
           </Button>
         </form>
       </Form>

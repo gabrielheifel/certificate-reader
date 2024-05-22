@@ -2,7 +2,7 @@
 
 import axios from "axios"
 import * as z from "zod"
-import bcrypt from "bcrypt"
+import bcrypt from "bcryptjs"
 import { RegisterSchema } from "@/app/schemas";
 import { db } from "@/lib/db";
 
@@ -26,11 +26,11 @@ export const getUserById = async (id: string) => {
 }
 
 
-export const axiosInstance = axios.create({
+const axiosInstance = axios.create({
   baseURL: "http://localhost:8080/user"
 })
 
-export const UserService = {
+const UserService = {
 
   async listUsers() {
     try {
