@@ -12,8 +12,13 @@ import { FormError } from "./form-error"
 import { login } from "@/actions/login"
 import { CardWrapper } from "./card-wrapper"
 import { useToast } from "@/components/ui/use-toast"
+import { useSearchParams } from "next/navigation"
 
 export function LoginForm() {
+  const searchParams = useSearchParams()
+  const urlError = searchParams.get("error") === "OAuthAccountNotLinked"
+    ? "Email already in use with different provider!"
+    : ""
 
   const [isPending, startTransiction] = useTransition()
   const [error, setError] = useState<string | undefined>("")
@@ -50,10 +55,6 @@ export function LoginForm() {
           }
         })
     })
-
-    // await signIn("google")
-    // await signIn("email", { email: values.email })
-
   }
 
   return (
@@ -111,7 +112,7 @@ export function LoginForm() {
             >
             </FormField>
           </div>
-          <FormError message={error} />
+          <FormError message={error || urlError} />
           <Button className="w-full" type="submit" disabled={isPending}>
             {isPending ? 'Carregando...' : 'Sign'}
           </Button>
