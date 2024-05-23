@@ -1,30 +1,29 @@
-// "use client"
-// import { AuthProvider } from './contexts/AuthContext'
-// import Login from './pages/Login'
-// import Footer from './components/Footer'
-// import Header from './components/Header'
-// import { HoursDrawer } from './components/HoursDrawer'
-// import Modal from './components/CertificateModal'
-// import Teste from './components/teste'
+"use client"
+import { Button } from '@/components/ui/button'
+import Footer from './components/Footer'
+import { HoursDrawer } from './components/HoursDrawer'
+import Link from 'next/link'
 
 export default function Home() {
 
   return (
-    <p>landing page</p>
+    // <p>landing page</p>
     // <AuthProvider>
 
-    //   <main className='flex flex-col m-auto max-w-screen-2xl'>
-    //     <Login />
-    //     {/* <div className='flex-1'>
-    //     <Header />
-    //     <div className='flex justify-between mt-5'> */}
-    //     {/* <HoursDrawer className='ml-4' />
-    //       <Modal className='ml-auto mr-4' /> */}
-    //     {/* </div> */}
-    //     {/* </div> */}
+    <main className='flex flex-col m-auto max-w-screen-2xl'>
+      <div className='flex-1'>
 
-    //     {/* <Footer /> */}
-    //   </main>
+        <Button>
+          <Link href='/auth/login'>Login Page</Link>
+        </Button>
+        {/* <div className='flex justify-between mt-5'>
+          <HoursDrawer className='ml-4' />
+          <NewDocumentModal className='ml-auto mr-4' />
+        </div> */}
+      </div>
+
+      <Footer />
+    </main>
     // </AuthProvider>
 
   )

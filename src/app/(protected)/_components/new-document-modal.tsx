@@ -1,11 +1,13 @@
+"use client"
+
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { HoverInfo } from './hoverInfo'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from "zod";
+import { HoverInfo } from './hover-info'
 // import { formSchema } from '@/app/utils/formSchema'
 
 const formSchema = z.object({
@@ -33,11 +35,12 @@ const formSchema = z.object({
 
 type FormSchema = z.infer<typeof formSchema>;
 
-interface Modal {
+interface NewDocumentModalProps {
   className?: string,
+  label: string,
 }
 
-export default function Modal({ className }: Modal) {
+export default function NewDocumentModal({ className, label }: NewDocumentModalProps) {
 
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
@@ -50,14 +53,11 @@ export default function Modal({ className }: Modal) {
     console.log(values);
   }
 
-
   return (
-    <main className={className}>
+    <main>
       <Dialog>
-        <DialogTrigger asChild>
-          <Button>
-            Novo documentos
-          </Button>
+        <DialogTrigger asChild className={className}>
+          <Button variant="default">{label}</Button>
         </DialogTrigger>
 
         <DialogContent className='w-auto min-w-[1000px] h-auto min-h-[500px]'>

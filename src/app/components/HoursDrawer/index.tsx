@@ -1,5 +1,6 @@
-import * as React from "react"
+"use client"
 
+import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import {
   Drawer,
@@ -12,12 +13,13 @@ import HoursProgress from "../HoursProgress"
 
 interface HoursDrawer {
   className?: string,
+  label: string
 }
 
-export function HoursDrawer({ className }: HoursDrawer) {
-  const [searchHours, setSearchHours] = React.useState(0)
-  const [extensionHours, setExtensionHours] = React.useState(10)
-  const [teachingHours, setTeachingHours] = React.useState(50)
+export function HoursDrawer({ className, label }: HoursDrawer) {
+  const [searchHours, setSearchHours] = useState(0)
+  const [extensionHours, setExtensionHours] = useState(10)
+  const [teachingHours, setTeachingHours] = useState(50)
 
   function onClick(adjustment: number) {
     setSearchHours(Math.max(200, Math.min(400, searchHours + adjustment)))
@@ -26,7 +28,7 @@ export function HoursDrawer({ className }: HoursDrawer) {
   return (
     <Drawer>
       <DrawerTrigger asChild className={className}>
-        <Button variant="default">Suas horas</Button>
+        <Button variant="default">{label}</Button>
       </DrawerTrigger>
       <DrawerContent>
         <div className="mx-auto w-full max-w-3xl">
