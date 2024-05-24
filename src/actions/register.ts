@@ -4,7 +4,7 @@ import * as z from "zod"
 import bcrypt from "bcrypt"
 import { RegisterSchema } from "@/app/schemas"
 import { db } from "@/lib/db"
-import { getUserByEmail } from "@/services/database/UserService"
+import { api } from "@/lib/axios"
 
 export const register = async (values: z.infer<typeof RegisterSchema>) => {
   const validatedFields = RegisterSchema.safeParse(values)
@@ -16,6 +16,16 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
   const { email, password, name, registration, isAdmin } = validatedFields.data
   const hashedPassword = await bcrypt.hash(password, 10)
   const registrationNumber = parseInt(registration)
+
+  try {
+    await api.post('/users', {
+      email: email,
+      password: hashedPassword,
+      registration: registrationNumber
+    })
+  } catch (error) {
+    console.log(error)
+  }
 
   const existingEmail = await getUserByEmail(email)
 
