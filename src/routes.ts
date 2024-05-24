@@ -6,6 +6,8 @@
 
 export const publicRoutes: string[] = [
   "/",
+  // "/app",
+  // "/app/settings",
 ];
 
 /**
@@ -35,4 +37,4 @@ export const apiPrefix: string = "/api";
  * @type {string}
  */
 
-export const DEFAULT_LOGIN_REDIRECT: string = "/dashboard";
+export const DEFAULT_LOGIN_REDIRECT: string = "/app";

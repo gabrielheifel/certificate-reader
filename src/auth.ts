@@ -4,10 +4,10 @@ import { PrismaClient, UserRole } from "@prisma/client"
 
 import authConfig from "@/auth.config"
 import { db } from "@/lib/db"
-import { getUserById } from "@/services/database/UserService"
+import { getUserById } from "@/services/user"
 // const prisma = new PrismaClient()
 
-type ExtendedUser = DefaultSession["user"] & {
+export type ExtendedUser = DefaultSession["user"] & {
   role: UserRole
 }
 
@@ -25,6 +25,7 @@ export const {
 } = NextAuth({
   pages: {
     signIn: "/auth/login",
+    signOut: "/auth/login",
     error: "/auth/error",
   },
   events: {
