@@ -28,7 +28,7 @@ export const RegisterSchema = z.object({
   registration: z.string().min(8).max(8, {
     message: 'Deve ter 8 caracteres'
   }),
-  isAdmin: z.boolean()
+  // role: z.string()
 })
 
 export const FormSchema = z.object({

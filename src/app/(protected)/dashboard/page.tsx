@@ -1,5 +1,4 @@
 import { auth } from "@/auth"
-import { toast } from "@/components/ui/use-toast"
 import Header from "../_components/header"
 
 const Dashboard = async () => {

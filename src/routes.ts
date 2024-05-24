@@ -28,6 +28,8 @@ export const authRouts: string[] = [
 
 export const apiAuthPrefix: string = "/api/auth";
 
+export const apiPrefix: string = "/api";
+
 /**
  * the default redirect path after logging in
  * @type {string}
