@@ -106,8 +106,8 @@ export function DashboardSidebarNavLink({
     <Link
       href={href}
       className={cn([
-        'flex items-center text-xs px-3 py-2 rounded-md',
-        active && 'bg-secondary',
+        'flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8',
+        active && 'text-foreground',
         className,
       ])}
     >
@@ -116,18 +116,21 @@ export function DashboardSidebarNavLink({
   )
 }
 type DashboardSidebarNavButtonProps = {
+  size?: "default" | "sm" | "lg" | "icon" | null | undefined,
   onClick?: () => (void),
 }
 
 export function DashboardSidebarNavButton({
   className,
   children,
+  size,
   onClick,
 }: DashboardSidebarGenericProps<DashboardSidebarNavButtonProps>) {
   return (
     <Button
+      size={size}
       className={cn([
-        'flex items-center text-xs h-8 mt-auto mx-auto px-3 py-2 rounded-md',
+        'flex items-center text-md mt-auto mx-auto px-2 py-2 rounded-md',
         className
       ])}
     >
