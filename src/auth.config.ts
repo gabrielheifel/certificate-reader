@@ -4,7 +4,7 @@ import GitHub from "next-auth/providers/github"
 import Google from "next-auth/providers/google"
 import Credentials from "next-auth/providers/credentials"
 
-import { LoginSchema } from "@/app/schemas"
+import { LoginSchema } from "@/schemas"
 import { getUserByEmail } from "./services/user"
 
 

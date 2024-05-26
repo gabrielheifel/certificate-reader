@@ -3,7 +3,7 @@
 import axios from "axios"
 import * as z from "zod"
 import bcrypt from "bcryptjs"
-import { RegisterSchema } from "@/app/schemas";
+import { RegisterSchema } from "@/schemas";
 import { db } from "@/lib/db";
 
 

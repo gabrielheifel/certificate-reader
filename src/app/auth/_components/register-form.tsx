@@ -4,21 +4,20 @@ import { useState, useTransition } from "react"
 import * as z from "zod"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { RegisterSchema } from "@/app/schemas"
+import { RegisterSchema } from "@/schemas"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { FormError } from "./form-error"
 import { register } from "@/actions/register"
 import { CardWrapper } from "./card-wrapper"
-import { useToast } from "@/components/ui/use-toast"
+import { toast } from "@/components/ui/use-toast"
 // import { UserService } from "@/services/database/UserService"
 
 export function RegisterForm() {
 
   const [isPending, startTransiction] = useTransition()
   const [error, setError] = useState<string | undefined>("")
-  const { toast } = useToast()
 
   const form = useForm<z.infer<typeof RegisterSchema>>({
     resolver: zodResolver(RegisterSchema),
@@ -27,7 +26,6 @@ export function RegisterForm() {
       password: "",
       name: "",
       registration: "",
-      isAdmin: false,
     }
   });
 

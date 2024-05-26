@@ -2,7 +2,7 @@
 
 import * as z from "zod"
 import { signIn } from "@/auth"
-import { LoginSchema } from "@/app/schemas"
+import { LoginSchema } from "@/schemas"
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes"
 import { AuthError } from "next-auth"
 
@@ -21,7 +21,7 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
       password,
       redirectTo: DEFAULT_LOGIN_REDIRECT,
     })
-    return { message: "Login successful!" }
+    return { success: "Login successful!" }
   } catch (error) {
     if (error instanceof AuthError) {
       switch (error.type) {

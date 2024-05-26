@@ -2,9 +2,9 @@
 
 import * as z from "zod"
 import bcrypt from "bcrypt"
-import { RegisterSchema } from "@/app/schemas"
+import { RegisterSchema } from "@/schemas"
 import { db } from "@/lib/db"
-import { getUserByEmail } from "@/services/database/UserService"
+import { getUserByEmail, getUserByRegistration } from "@/services/user"
 
 export const register = async (values: z.infer<typeof RegisterSchema>) => {
   const validatedFields = RegisterSchema.safeParse(values)
@@ -13,13 +13,17 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
     return { error: "Invalid fields!" }
   }
 
-  const { email, password, name, registration, isAdmin } = validatedFields.data
+  const { email, password, name, registration } = validatedFields.data
   const hashedPassword = await bcrypt.hash(password, 10)
   const registrationNumber = parseInt(registration)
 
   const existingEmail = await getUserByEmail(email)
+  const existingRegistration = await getUserByRegistration(registrationNumber)
 
   if (existingEmail) return { error: "Email already in use!" }
+  if (existingRegistration) return { error: "Registration already in use!" }
+
+  // await findUserByEmail(email)
 
   await db.user.create({
     data: { email, password: hashedPassword, name, registration: registrationNumber }
