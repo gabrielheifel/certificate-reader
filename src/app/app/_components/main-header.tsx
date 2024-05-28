@@ -14,14 +14,11 @@ import {
 import { Input } from "@/components/ui/input"
 
 import { UserDropdown } from "./user-dropdown"
-import { ExtendedUser } from "@/auth"
 import MenuResponsive from "./menu-responsive"
+import { useCurrentRole } from "@/hooks/use-current-role"
 
-interface MainSidebarProps {
-  user?: ExtendedUser
-}
-
-export default function MainHeader({ user }: MainSidebarProps) {
+export default function MainHeader() {
+  const role = useCurrentRole()
 
   return (
     <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
@@ -53,7 +50,8 @@ export default function MainHeader({ user }: MainSidebarProps) {
           className="w-full rounded-lg bg-background pl-8 md:w-[200px] lg:w-[320px]"
         />
       </div>
-      <UserDropdown user={user} />
+      <h1>Role: {role}</h1>
+      <UserDropdown />
     </header>
   )
 }

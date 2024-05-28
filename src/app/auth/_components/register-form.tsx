@@ -11,6 +11,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { FormError } from "./form-error"
 import { register } from "@/actions/register"
 import { CardWrapper } from "./card-wrapper"
+import { toast as toastSonner } from "sonner"
 import { toast } from "@/components/ui/use-toast"
 // import { UserService } from "@/services/database/UserService"
 
@@ -34,20 +35,15 @@ export function RegisterForm() {
   const handleCreate = async (values: z.infer<typeof RegisterSchema>) => {
     setError("")
 
-    toast({
-      title: "Registering...",
-    })
+    toastSonner.loading("Registering...")
 
-    startTransiction(() => {
-      register(values)
-        .then((data) => {
-          toast({
-            variant: data?.success ? "success" : "destructive",
-            title: data?.success ? data?.success : data?.error,
-
-          })
-          setError(data?.error)
-        })
+    startTransiction(async () => {
+      const response = await register(values)
+      toast({
+        variant: response.success ? "success" : "destructive",
+        description: response.success ?? response.error,
+      })
+      setError(response?.error)
     })
   }
 

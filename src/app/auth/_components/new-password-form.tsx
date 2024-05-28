@@ -11,8 +11,8 @@ import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { FormError } from "./form-error"
 import { CardWrapper } from "./card-wrapper"
-import { toast } from "@/components/ui/use-toast"
 import { newPassword } from "@/actions/new-password"
+import { toast } from "@/components/ui/use-toast"
 
 export function NewPasswordForm() {
   const searchParams = useSearchParams()
@@ -34,23 +34,12 @@ export function NewPasswordForm() {
     setError("")
 
     startTransiction(async () => {
-      await newPassword(values, token)
-        .then((data) => {
-          if (data?.success) {
-            toast({
-              variant: "success",
-              title: data?.success,
-            })
-          } else {
-            toast({
-              variant: "destructive",
-              title: "Login failed",
-              description: data?.error
-            })
-            setError(data?.error)
-          }
-        })
-
+      const response = await newPassword(values, token)
+      toast({
+        variant: response.success ? "success" : "destructive",
+        description: response.success ?? response.error,
+      })
+      setError(response?.error)
     })
   }
 

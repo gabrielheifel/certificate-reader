@@ -4,19 +4,17 @@ import Link from "next/link"
 import {
   Clock,
   Home,
-  LineChart,
-  Package,
   Package2,
   PanelLeft,
-  ShoppingCart,
+  Settings,
   Upload,
-  Users2,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { ExtendedUser } from "@/auth"
 import UploadFileDialog from "./upload-file-dialog"
+import { ModeToggle } from "@/components/theme/mode-toggle"
 // import { usePathname } from "next/navigation"
 
 interface MainSidebarProps {
@@ -66,15 +64,19 @@ export default function MenuResponsive({ user }: MainSidebarProps) {
             href="#"
             className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
           >
-            <LineChart className="h-5 w-5" />
+            <Settings className="h-5 w-5" />
             Settings
           </Link>
-          <UploadFileDialog>
+          <ModeToggle
+            className="flex gap-4 px-2.5 text-muted-foreground hover:text-foreground"
+            label="Theme"
+          />
+          {/* <UploadFileDialog>
             <Button className="flex items-center gap-4 px-2.5 hover:text-foreground">
               <Upload className="h-3.5 w-3.5" />
               Upload File
             </Button>
-          </UploadFileDialog>
+          </UploadFileDialog> */}
         </nav>
       </SheetContent>
     </Sheet>

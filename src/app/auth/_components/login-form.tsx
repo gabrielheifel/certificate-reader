@@ -11,9 +11,9 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { FormError } from "./form-error"
 import { login } from "@/actions/login"
 import { CardWrapper } from "./card-wrapper"
-import { toast } from "@/components/ui/use-toast"
 import { useSearchParams } from "next/navigation"
 import Link from "next/link"
+import { toast } from "@/components/ui/use-toast"
 
 export function LoginForm() {
   const searchParams = useSearchParams()
@@ -38,22 +38,12 @@ export function LoginForm() {
     setError("")
 
     startTransiction(async () => {
-      await login(values)
-        .then((data) => {
-          if (data?.success) {
-            toast({
-              variant: "success",
-              title: data?.success,
-            })
-          } else {
-            toast({
-              variant: "destructive",
-              title: "Login failed",
-              description: data?.error
-            })
-            setError(data?.error)
-          }
-        })
+      const response = await login(values);
+      toast({
+        variant: response.success ? "success" : "destructive",
+        description: response.success ?? response.error,
+      })
+      setError(response?.error)
     })
   }
 

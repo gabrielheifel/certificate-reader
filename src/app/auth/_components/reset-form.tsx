@@ -10,8 +10,8 @@ import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { FormError } from "./form-error"
 import { CardWrapper } from "./card-wrapper"
-import { toast } from "@/components/ui/use-toast"
 import { reset } from "@/actions/reset"
+import { toast } from "@/components/ui/use-toast"
 
 export function ResetForm() {
   const [isPending, startTransiction] = useTransition()
@@ -30,22 +30,12 @@ export function ResetForm() {
     setError("")
 
     startTransiction(async () => {
-      await reset(values)
-        .then((data) => {
-          if (data?.success) {
-            toast({
-              variant: "success",
-              title: data?.success,
-            })
-          } else {
-            toast({
-              variant: "destructive",
-              title: "Login failed",
-              description: data?.error
-            })
-            setError(data?.error)
-          }
-        })
+      const response = await reset(values)
+      toast({
+        variant: response.success ? "success" : "destructive",
+        description: response.success ?? response.error,
+      })
+      setError(response?.error)
     })
   }
 
@@ -85,7 +75,7 @@ export function ResetForm() {
           </div>
           <FormError message={error} />
           <Button className="w-full" type="submit" disabled={isPending}>
-            {isPending ? 'Carregando...' : 'Send reset email'}
+            {isPending ? 'Sending...' : 'Send reset email'}
           </Button>
         </form>
       </Form>

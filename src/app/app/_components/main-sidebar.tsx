@@ -5,13 +5,10 @@ import Link from "next/link"
 import {
   Clock,
   Home,
-  LineChart,
-  Package,
   Package2,
+  PanelLeft,
   Settings,
-  ShoppingCart,
   Upload,
-  Users2,
 } from "lucide-react"
 import {
   Tooltip,
@@ -21,6 +18,8 @@ import {
 import { DashboardSidebarNavLink } from "@/components/dashboard/sidebar"
 import UploadFileDialog from './upload-file-dialog'
 import { Button } from '@/components/ui/button'
+import { UserDropdown } from './user-dropdown'
+import { ModeToggle } from '@/components/theme/mode-toggle'
 
 
 export default function MainSidebar() {
@@ -33,8 +32,16 @@ export default function MainSidebar() {
   return (
     <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-background sm:flex">
       <nav className="flex flex-col items-center gap-4 px-2 py-4">
+        <Button
+          size="icon"
+          variant="secondary"
+          className="group h-9 w-9 shrink-0 justify-center gap-2 rounded-full text-lg font-semibold text-primary md:h-8 md:w-8 md:text-base"
+        >
+          <PanelLeft className="h-4 w-4 transition-all group-hover:scale-110" />
+          <span className="sr-only">Upload File</span>
+        </Button>
         <Link
-          href="#"
+          href="/"
           className="group flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base"
         >
           <Package2 className="h-4 w-4 transition-all group-hover:scale-110" />
@@ -66,24 +73,31 @@ export default function MainSidebar() {
       </nav>
       <nav className="mt-auto flex flex-col items-center gap-4 px-2 py-4">
         <Tooltip>
-          <TooltipTrigger >
-            <UploadFileDialog>
-              <Button
-                size="icon"
-                className="group h-9 w-9 shrink-0 justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base"
-              >
-                <Upload className="h-4 w-4 transition-all group-hover:scale-110" />
-                <span className="sr-only">Upload File</span>
-              </Button>
-            </UploadFileDialog>
-
+          <TooltipTrigger>
+            <Button
+              size="icon"
+              className="group h-9 w-9 shrink-0 justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base"
+            >
+              <Upload className="h-4 w-4 transition-all group-hover:scale-110" />
+              <span className="sr-only">Upload File</span>
+            </Button>
+            {/* <UploadFileDialog>
+            </UploadFileDialog> */}
           </TooltipTrigger>
           <TooltipContent side="right">Upload File</TooltipContent>
         </Tooltip>
         <Tooltip>
+          <TooltipTrigger>
+            <ModeToggle
+              className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors border-none hover:text-foreground md:h-8 md:w-8"
+            />
+          </TooltipTrigger>
+          <TooltipContent side="right">Theme</TooltipContent>
+        </Tooltip>
+        <Tooltip>
           <TooltipTrigger asChild>
             <Link
-              href="#"
+              href="/app/settings"
               className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
             >
               <Settings className="h-5 w-5" />
@@ -91,6 +105,12 @@ export default function MainSidebar() {
             </Link>
           </TooltipTrigger>
           <TooltipContent side="right">Settings</TooltipContent>
+        </Tooltip>
+        <Tooltip>
+          <TooltipTrigger>
+            <UserDropdown />
+          </TooltipTrigger>
+          <TooltipContent side="right">Profile</TooltipContent>
         </Tooltip>
       </nav>
     </aside>
