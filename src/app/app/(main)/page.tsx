@@ -1,4 +1,3 @@
-import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -10,11 +9,12 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { ChevronLeft, File, ListFilter, Upload } from "lucide-react"
 import UploadFileDialog from "../_components/upload-file-dialog"
+import Image from "next/image"
+import Image1 from "../../../../public/uploads/teste2.png"
 
 export default function Page() {
   return (
     <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
-
       <div className="flex items-center">
         <div className="flex items-center gap-4">
           <Button variant="outline" size="icon" className="h-7 w-7">
@@ -53,14 +53,15 @@ export default function Page() {
               Export
             </span>
           </Button>
-          <UploadFileDialog>
+          <UploadFileDialog />
+          {/* <UploadFileDialog>
             <Button size="sm" className="h-7 gap-1">
               <Upload className="h-3.5 w-3.5" />
               <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
                 Upload File
               </span>
             </Button>
-          </UploadFileDialog>
+          </UploadFileDialog> */}
         </div>
       </div>
 
@@ -73,18 +74,18 @@ export default function Page() {
             </p>
           </div>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-            <img
+            <Image
               alt="Imagem 1"
               className="aspect-[3/2] w-full overflow-hidden rounded-lg object-cover"
               height={400}
-              src="/placeholder.svg"
+              src={Image1}
               width={600}
             />
-            <img
+            <Image
               alt="Imagem 2"
               className="aspect-[3/2] w-full overflow-hidden rounded-lg object-cover"
               height={400}
-              src="/placeholder.svg"
+              src={Image1}
               width={600}
             />
             <img

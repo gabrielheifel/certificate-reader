@@ -27,6 +27,15 @@ model Account {
   @@map("accounts")
 }
 
+model PasswordResetToken {
+  id      String   @id @default(cuid())
+  email   String
+  token   String   @unique
+  expires DateTime
+
+  @@unique([email, token])
+}
+
 enum UserRole {
   ADMIN
   USER
@@ -45,14 +54,16 @@ model User {
   role         UserRole      @default(USER)
   accounts     Account[]
   certificates Certificate[]
+  File         File[]
 
   @@map("users")
 }
 
-model Certificate {
+model File {
   id    String @id @default(cuid())
   title String
   date  String
+  type  String
 
   user   User   @relation(fields: [userId], references: [id])
   userId String
@@ -61,14 +72,26 @@ model Certificate {
   updatedAt DateTime  @updatedAt
   doneAt    DateTime?
 
-  @@map("certificates")
+  certificate Certificate?
+
+  @@map("files")
 }
 
-model PasswordResetToken {
-  id      String   @id @default(cuid())
-  email   String
-  token   String   @unique
-  expires DateTime
+model Certificate {
+  id    String @id @default(cuid())
+  title String
+  date  String
+  type  String
 
-  @@unique([email, token])
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  doneAt    DateTime?
+
+  file   File   @relation(fields: [fileId], references: [id])
+  fileId String @unique
+
+  @@map("certificates")
 }
