@@ -48,8 +48,9 @@ export const NewPasswordSchema = z.object({
 
 export const UploadFileSchema = z.object({
   title: z.string().min(2).max(200),
-  // file: z.custom<FileList | null>((val) => val instanceof FileList, "Required")
-  //   .refine((files) => files?.length > 0, "Required")
+  file: z
+    .custom<FileList>((val) => val instanceof FileList, "Required")
+    .refine((files) => files.length > 0, "Required")
 })
 
 export const FormSchema = z.object({

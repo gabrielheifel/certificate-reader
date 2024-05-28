@@ -1,5 +1,6 @@
 'use client'
 
+import { useState, useTransition } from "react"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
@@ -16,44 +17,80 @@ import { Button } from "@/components/ui/button"
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { useCurrentUser } from "@/hooks/use-current-user"
+import { Upload } from "lucide-react"
+// import { toast } from "sonner"
+import { uploadFile } from "@/actions/files"
+import { toast } from "@/components/ui/use-toast"
+import { ToastAction } from "@/components/ui/toast"
+import Link from "next/link"
 
 type UploadFileDialogProps = {
-  children: React.ReactNode
+  children?: React.ReactNode
   className?: string
 }
 
 export default function UploadFileDialog({ children, className }: UploadFileDialogProps) {
+  const [isPending, startTransiction] = useTransition()
+  const [open, setOpen] = useState<boolean>(false)
 
   const form = useForm<z.infer<typeof UploadFileSchema>>({
     resolver: zodResolver(UploadFileSchema),
     defaultValues: {
       title: "",
-      // file: null
+      file: undefined
     }
   })
 
-  function onSubmit(values: z.infer<typeof UploadFileSchema>) {
-    console.log(values)
+  const onSubmit = async (formData: FormData) => {
+    console.log(formData)
+
+    startTransiction(async () => {
+      const response = await uploadFile(formData);
+      if (response.success) {
+        toast({
+          variant: "success",
+          description: response.success,
+        })
+        setOpen(false)
+      } else {
+        toast({
+          description: response.error,
+          action:
+            <ToastAction altText="Settings">
+              <Link href="/app/settings">
+                Settings
+              </Link>
+            </ToastAction>,
+        })
+      }
+    });
   }
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        {children}
+        {/* {children} */}
+        <Button size="sm" className="h-7 gap-1">
+          <Upload className="h-3.5 w-3.5" />
+          <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
+            Upload File
+          </span>
+        </Button>
       </DialogTrigger>
       <DialogContent className="w-auto">
-        <DialogHeader>
-          <DialogTitle className="mb-8">Upload File</DialogTitle>
-          <DialogDescription>
-            <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <Form {...form}>
+          {/* <form onSubmit={handleSubmit(onSubmit)}> */}
+          <form action={onSubmit}>
+            <DialogHeader>
+              <DialogTitle className="mb-8">Upload File</DialogTitle>
+              <DialogDescription className="space-y-8">
                 <FormField
                   control={form.control}
                   name="title"
@@ -67,31 +104,30 @@ export default function UploadFileDialog({ children, className }: UploadFileDial
                     </FormItem>
                   )}
                 />
-                {/* <FormField
+                <FormField
                   control={form.control}
                   name="file"
-                  render={({ field: { onChange }, ...field }) => (
+                  render={() => (
                     <FormItem>
                       <FormLabel>File</FormLabel>
                       <FormControl>
                         <Input
                           className="cursor-pointer"
-                          type="file" {...field}
-                          onChange={(event) => {
-                            if (!event.target.files) return
-                            onChange(event.target.files[0])
-                          }}
+                          type="file"
+                          {...form.register('file')}
                         />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
-                /> */}
-                <Button type="submit">Submit</Button>
-              </form>
-            </Form>
-          </DialogDescription>
-        </DialogHeader>
+                />
+                <Button type="submit" disabled={isPending}>
+                  {isPending ? 'Carregando...' : 'Submit'}
+                </Button>
+              </DialogDescription>
+            </DialogHeader>
+          </form>
+        </Form>
       </DialogContent>
     </Dialog>
   )

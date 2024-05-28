@@ -8,7 +8,8 @@ import { getUserById } from "@/services/user"
 // const prisma = new PrismaClient()
 
 export type ExtendedUser = DefaultSession["user"] & {
-  role: UserRole
+  role: UserRole,
+  registration?: Number,
 }
 
 declare module "next-auth" {
@@ -46,6 +47,10 @@ export const {
         session.user.role = token.role as UserRole
       }
 
+      if (token.registration && session.user) {
+        session.user.registration = token.registration as Number
+      }
+
       return session
     },
     async jwt({ token }) {
@@ -56,6 +61,7 @@ export const {
       if (!existingUser) return token
 
       token.role = existingUser.role
+      token.registration = existingUser.registration
 
       return token
     }
