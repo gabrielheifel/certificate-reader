@@ -39,6 +39,7 @@ type UploadFileDialogProps = {
 export default function UploadFileDialog({ children, className }: UploadFileDialogProps) {
   const [isPending, startTransiction] = useTransition()
   const [open, setOpen] = useState<boolean>(false)
+  const user = useCurrentUser()
 
   const form = useForm<z.infer<typeof UploadFileSchema>>({
     resolver: zodResolver(UploadFileSchema),
@@ -51,8 +52,22 @@ export default function UploadFileDialog({ children, className }: UploadFileDial
   const onSubmit = async (formData: FormData) => {
     console.log(formData)
 
+    if (!user?.registration) {
+      return (
+        toast({
+          description: "Não é possível fazer upload, por favor informe sua matrícula em settings.",
+          action:
+            <ToastAction altText="Settings">
+              <Link href="/app/settings">
+                Settings
+              </Link>
+            </ToastAction>,
+        })
+      )
+    }
+
     startTransiction(async () => {
-      const response = await uploadFile(formData);
+      const response = await uploadFile(formData, user);
       if (response.success) {
         toast({
           variant: "success",
@@ -122,7 +137,7 @@ export default function UploadFileDialog({ children, className }: UploadFileDial
                   )}
                 />
                 <Button type="submit" disabled={isPending}>
-                  {isPending ? 'Carregando...' : 'Submit'}
+                  {isPending ? 'Enviando...' : 'Submit'}
                 </Button>
               </DialogDescription>
             </DialogHeader>

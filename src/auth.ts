@@ -9,7 +9,7 @@ import { getUserById } from "@/services/user"
 
 export type ExtendedUser = DefaultSession["user"] & {
   role: UserRole,
-  registration?: Number,
+  registration?: number,
 }
 
 declare module "next-auth" {
@@ -48,7 +48,7 @@ export const {
       }
 
       if (token.registration && session.user) {
-        session.user.registration = token.registration as Number
+        session.user.registration = token.registration as number
       }
 
       return session
